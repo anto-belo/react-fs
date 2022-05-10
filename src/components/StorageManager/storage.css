@@ -1,0 +1,15 @@
+.storage-item:hover {
+    background-color: #eee;
+}
+
+.storage-item:hover i {
+    visibility: visible;
+}
+
+.delete-button {
+    visibility: hidden;
+}
+
+.storage-item > * {
+    cursor: pointer;
+}
