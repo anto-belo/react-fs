@@ -16,9 +16,17 @@ const FolderItem = ({type, title}) => {
             storageContext.resolveRoot(title)
         } else {
             //todo open file in another tab
-            let query = `http://localhost:8080/img/${storageContext.root}/${title}`;
+            let query = `http://localhost:8080/img${getPath()}`;
             console.log(`HTTP GET on ${query}`)
         }
+    }
+
+    function getPath() {
+        let rootPath = storageContext.root;
+        if (rootPath === '/') {
+            rootPath = '';
+        }
+        return `${rootPath}/${title}`;
     }
 
     return (
@@ -26,7 +34,13 @@ const FolderItem = ({type, title}) => {
              onClick={onClickHandler}>
             <i className={iconClassName}/>
             <p className="d-table-cell px-2 m-0">{title}</p>
-            <i className="fa fa-trash fs-5 text-danger delete-button" title={deleteTitle}/>
+            <i className="fa fa-trash fs-5 text-danger delete-button" title={deleteTitle}
+               data-bs-toggle="modal" data-bs-target="#delete-modal"
+               onClick={() => {
+                   console.log(getPath())
+                   storageContext.setDeletePath(getPath());
+                   //todo delete file/folder
+               }}/>
         </div>
     );
 };
