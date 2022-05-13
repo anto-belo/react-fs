@@ -1,45 +1,21 @@
 import StorageManager from "./components/StorageManager/StorageManager";
+import FileService from "./api/FileService";
+import {useEffect, useState} from "react";
 
 function App() {
-    let structure = {
-        "name": "FS",
-        "files": [
-            "colors.png",
-            "george.png"
-        ],
-        "folders": [
-            {
-                "name": "Hey",
-                "files": [
-                    "hey_1.jpg",
-                    "hey_2.jpg",
-                    "hey_3.jpg"
-                ],
-                "folders": [
-                    {
-                        "name": "Heys",
-                        "files": [
-                            "heys_1.jpg",
-                            "heys_2.jpg",
-                            "heys_3.jpg"
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "Hey2",
-                "files": [
-                    "hey_21.jpg",
-                    "hey_22.jpg",
-                    "hey_23.jpg"
-                ]
-            }
-        ]
-    };
+    const [structure, setStructure] = useState();
+
+    useEffect(() => {
+        async function fetchStructure() {
+            return await FileService.getFSStructure();
+        }
+
+        fetchStructure().then(r => setStructure(r.data));
+    }, []);
 
     return (
         <div className="App">
-            <StorageManager initStructure={structure} initRoot="Hey/Heys"/>
+            <StorageManager structure={structure} setStructure={setStructure}/>
         </div>
     );
 }

@@ -6,10 +6,21 @@
     visibility: visible;
 }
 
-.delete-button {
+.option-button {
     visibility: hidden;
 }
 
 .storage-item > * {
     cursor: pointer;
+}
+
+.as-link {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    cursor: pointer;
+}
+
+.as-link:hover {
+    text-decoration: underline;
 }
