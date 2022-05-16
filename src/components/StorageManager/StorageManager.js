@@ -61,6 +61,7 @@ const StorageManager = ({structure, setStructure, initRoot}) => {
 
         if (curFolder !== undefined) {
             if (curFolder.files) {
+                fileNames = fileNames.filter(name => !curFolder.files.includes(name));
                 curFolder.files = [...curFolder.files, ...fileNames];
             } else {
                 curFolder.files = fileNames;
@@ -86,6 +87,17 @@ const StorageManager = ({structure, setStructure, initRoot}) => {
     }
 
     function onFilesUpload(files) {
+        if (!files) return;
+
+        files = [...files];
+        const curFolderFiles = folder.files;
+        if (curFolderFiles && files.map(f => f.name).some(name => curFolderFiles.includes(name))) {
+            const overwrite = window.confirm("Some of the files exist. Overwrite them (OK) or skip (Cancel)?");
+            if (!overwrite) {
+                files = files.filter(f => !curFolderFiles.includes(f.name));
+            }
+        }
+
         FileService.uploadFiles(files, root)
             .then(() => {
                 addFilesOnRoot(files.map(f => f.name))
